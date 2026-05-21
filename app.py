@@ -543,9 +543,10 @@ with col_scatter:
     scatter_y = "sale_dollars"
 
     sample_df = df.sample(min(2000, len(df)), random_state=42)
-    r, p_val = stats.pearsonr(df[scatter_x].dropna(), df[scatter_y].dropna())
-    X = df[[scatter_x]].values
-    y_arr = df[scatter_y].values
+    df_clean = df[[scatter_x, scatter_y]].dropna()
+    r, p_val = stats.pearsonr(df_clean[scatter_x], df_clean[scatter_y])
+    X = df_clean[[scatter_x]].values
+    y_arr = df_clean[scatter_y].values
     reg = LinearRegression().fit(X, y_arr)
     r2 = reg.score(X, y_arr)
     coef = reg.coef_[0]
